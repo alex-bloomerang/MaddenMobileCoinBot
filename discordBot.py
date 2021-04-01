@@ -27,7 +27,6 @@ if __name__ == "__main__":
 
 
     @client.event
-    async def on_message(message):
         if message.author == client.user:
             return
 
@@ -54,6 +53,7 @@ if __name__ == "__main__":
 
         if message.content.startswith("!price"):
             player_request = message.content[(len("!price")):].strip().split(",")
+            player_request = list(map(str.strip, player_request)) # trim the tokens to remove extra spaces
             if len(player_request) == 3:
                 await message.channel.send(
                     get_player(int(player_request[0]), player_request[1] + " " + player_request[2], db, False))
@@ -63,6 +63,7 @@ if __name__ == "__main__":
 
         if message.content.startswith("!input"):
             player_request = message.content[(len("!input")):].strip().split(",")
+            player_request = list(map(str.strip, player_request)) # trim the tokens to remove extra spaces
             if len(player_request) == 4:
                 await message.channel.send(
                     update_price(int(player_request[0]), player_request[1] + " " + player_request[2],
@@ -80,6 +81,7 @@ if __name__ == "__main__":
 
         if message.content.startswith("!allprices"):
             player_request = message.content[(len("!allprices")):].strip().split(",")
+            player_request = list(map(str.strip, player_request)) # trim the tokens to remove extra spaces
             if len(player_request) == 3:
                 await message.channel.send(
                     get_player(int(player_request[0]), player_request[1] + " " + player_request[2], db, True))
