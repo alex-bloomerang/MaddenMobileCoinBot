@@ -1,7 +1,8 @@
 import json
-from tinydb import TinyDB
 import sys
 from types import SimpleNamespace
+
+from tinydb import TinyDB
 
 
 def reformat_db(old_db, new_db):
