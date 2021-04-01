@@ -14,7 +14,7 @@ date_key = "dateOfMostRecentPrice"
 
 def update_price(rating, name, price, db):
     inner_player = Query()
-    message = str(rating) + " " + name.title() + " " + str(('{:,}'.format(price)))
+    message = str(rating) + " " + name.title() + " with price: " + str(('{:,}'.format(price)))
     name = name.lower()
 
     if db.contains((inner_player.name == name) & (inner_player.rating == rating)):
@@ -46,18 +46,29 @@ def update_price(rating, name, price, db):
         return message
 
 
-def get_player(rating, name, db):
+def get_player(rating, name, db, all_prices):
     player = Query()
     name = name.lower()
     if db.contains((player.name == name) & (player.rating == rating)):
         item = db.get((player.name == name) & (player.rating == rating))
         formatted_price = ('{:,}'.format(item.get(most_recent_key)))
         formatted_average = ('{:,}'.format(item.get(average_key)))
-        message = ("Player: %d %s\nMost Recent Price: %s\nMost Recent Price added on: %s\nAverage of %d Most Recent "
-                   "Prices: %s" %
-                   (rating, name.title(), formatted_price, item.get(date_key),
-                    len(item.get(rolling_price_key)),
-                    formatted_average))
+        if all_prices:
+            formatted_all_prices = item.get(rolling_price_key)
+            formatted_all_prices = ['{:,}'.format(price) for price in formatted_all_prices]
+            message = (
+                        "Player: %d %s\nMost Recent Price: %s\nMost Recent Price added on: %s\nAll "
+                        "Prices:\n%s\nAverage of %d Most Recent Prices: %s" %
+                        (rating, name.title(), formatted_price, item.get(date_key), "\n".join(formatted_all_prices),
+                         len(item.get(rolling_price_key)),
+                         formatted_average))
+        else:
+            message = ("Player: %d %s\nMost Recent Price: %s\nMost Recent Price added on: %s\nAverage of %d Most "
+                       "Recent "
+                       "Prices: %s" %
+                       (rating, name.title(), formatted_price, item.get(date_key),
+                        len(item.get(rolling_price_key)),
+                        formatted_average))
         log.info(message)
         return message
     else:

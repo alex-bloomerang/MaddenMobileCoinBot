@@ -56,7 +56,7 @@ if __name__ == "__main__":
             player_request = message.content[(len("!price")):].strip().split(",")
             if len(player_request) == 3:
                 await message.channel.send(
-                    get_player(int(player_request[0]), player_request[1] + " " + player_request[2], db))
+                    get_player(int(player_request[0]), player_request[1] + " " + player_request[2], db, False))
             else:
                 await message.channel.send("To get a players price use the following command \"!price Rating,"
                                            "FirstInitial,Surname\"")
@@ -77,6 +77,15 @@ if __name__ == "__main__":
                     get_highest_sellers(int(player_request[0]), db))
             else:
                 await message.channel.send("To add a player to the database use the following command:\"!rank Rating\"")
+
+        if message.content.startswith("!allprices"):
+            player_request = message.content[(len("!allprices")):].strip().split(",")
+            if len(player_request) == 3:
+                await message.channel.send(
+                    get_player(int(player_request[0]), player_request[1] + " " + player_request[2], db, True))
+            else:
+                await message.channel.send("To get a players price use the following command \"!allprices Rating,"
+                                           "FirstInitial,Surname\"")
 
         if message.content.startswith("!help"):
             help_message = "Welcome to CoinBot2.0\n\nBelow is a full list of the commands:\n\n" \
